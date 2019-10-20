@@ -4,9 +4,12 @@
   "version": "0.0.1",
   "scripts": {
     "start-local": "webpack-dev-server --env.local --progress --hot --open",
+    "start-streaming-local": "webpack-dev-server --env.local --env.stream --progress --hot --open",
+    "start-live-local": "webpack-dev-server --env.local --env.live --progress --hot --open",
+    "start-live": "webpack-dev-server --env.local --env.live --progress --hot --open",
     "build-clean": "rm -rf dist && mkdir dist",
     "build-copy": "cp -r assets dist && cp index.html dist",
-    "build-script": "NODE_ENV=production webpack  --env.local --env.prod",
+    "build-script": "NODE_ENV=production webpack  --env.local --env.live --env.prod",
     "build": "npm run build-clean && npm run build-script && npm run build-copy"
   },
   "dependencies": {

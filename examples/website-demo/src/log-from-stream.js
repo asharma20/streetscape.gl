@@ -17,20 +17,16 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import sedan from './sedan';
 
-function createCar(makeMesh, opts) {
-  const {length, width, height, scale, color = [128, 128, 128], origin = [0, 0, 0]} = opts;
+import {XVIZStreamLoader} from 'streetscape.gl';
 
-  if (!Number.isFinite(length) || !Number.isFinite(width) || !Number.isFinite(height)) {
-    throw new Error('invalid dimensions');
-  }
-
-  const mesh = makeMesh(length, width, height, scale);
-
-  return {color, origin, mesh, scale: [1, 1, 1]};
-}
-
-export default {
-  sedan: opts => createCar(sedan, opts)
-};
+export default new XVIZStreamLoader({
+  logGuid: 'mock',
+  // bufferLength: 15,
+  serverConfig: {
+    defaultLogLength: 30,
+    serverUrl: 'ws://localhost:8081'
+  },
+  worker: true,
+  maxConcurrency: 4
+});

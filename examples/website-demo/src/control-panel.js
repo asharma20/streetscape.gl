@@ -35,7 +35,7 @@ export default class ControlPanel extends PureComponent {
   }
 
   _renderTabContent() {
-    const {log, selectedLog, onLogChange} = this.props;
+    const {log} = this.props;
 
     switch (this.state.tab) {
       case 'streams':
@@ -54,7 +54,7 @@ export default class ControlPanel extends PureComponent {
         );
 
       case 'info':
-        return <MetadataPanel log={log} selectedLog={selectedLog} onLogChange={onLogChange} />;
+        return <MetadataPanel log={log} />;
 
       case 'help':
         return <HelpPanel />;
@@ -84,7 +84,7 @@ export default class ControlPanel extends PureComponent {
         <header>
           <div id="logo">
             <a href="../index.html">
-              <img src="assets/logo.png" />
+              <img src="assets/nod_logo.png" />
             </a>
           </div>
           <div id="help-btn">

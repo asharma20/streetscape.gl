@@ -21,7 +21,6 @@
 import React, {PureComponent} from 'react';
 import {connectToLog} from 'streetscape.gl';
 import {Dropdown} from '@streetscape.gl/monochrome';
-import {LOGS} from './constants';
 
 function extractLink(html) {
   const match = html.match(/href="(.*?)"/);
@@ -59,31 +58,23 @@ class MetadataPanel extends PureComponent {
 
     return (
       <div id="log-info">
-        <h4>Select Demo Log</h4>
-        {this._renderLogSelector()}
 
         <h4>XVIZ Version</h4>
         <div>{metadata.version}</div>
-
-        <h4>Log Start Time</h4>
-        <div>{new Date(metadata.start_time * 1000).toJSON()}</div>
-
-        <h4>Log End Time</h4>
-        <div>{new Date(metadata.end_time * 1000).toJSON()}</div>
 
         {hasLicenseInfo && (
           <div>
             <h4>Demo Description</h4>
             <div>
-              <p>{metadata.log_info.description}</p>
-              <p>
-                <a href={extractLink(metadata.log_info['license link'])}>
-                  {metadata.log_info.license}
+              <p>{metadata._data.log_info.description}</p>
+              {/* <p>
+                <a href={extractLink(metadata._data.log_info['license link'])}>
+                  {metadata._data.log_info.license}
                 </a>
-              </p>
+              </p> */}
             </div>
 
-            <h4>Data Source</h4>
+            {/* <h4>Data Source</h4>
             <div>
               <p>
                 <a href={extractLink(metadata.log_info.source.link)}>
@@ -92,7 +83,7 @@ class MetadataPanel extends PureComponent {
               </p>
               <p>{metadata.log_info.source.author}</p>
               <p dangerouslySetInnerHTML={{__html: metadata.log_info.source.copyright}} />
-            </div>
+            </div> */}
           </div>
         )}
       </div>

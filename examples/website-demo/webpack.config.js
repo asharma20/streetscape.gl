@@ -77,19 +77,13 @@ const CONFIG = {
 };
 
 module.exports = env => {
-  const config = Object.assign({}, CONFIG);
-
+  let config = Object.assign({}, CONFIG);
   if (env.prod) {
     // production
     Object.assign(config, {
       mode: 'production'
     });
 
-    config.plugins = config.plugins.concat(
-      new webpack.DefinePlugin({
-        LOG_DIR: JSON.stringify('https://raw.githubusercontent.com/uber/xviz-data/master')
-      })
-    );
   } else {
     // dev
     Object.assign(config, {
@@ -97,7 +91,6 @@ module.exports = env => {
       devServer: {
         contentBase: [
           resolve(__dirname, '../../website/src/static'),
-          resolve(__dirname, '../../../xviz-data'),
           resolve(__dirname)
         ]
       },
@@ -110,12 +103,14 @@ module.exports = env => {
       use: ['source-map-loader'],
       enforce: 'pre'
     });
-
-    config.plugins = config.plugins.concat(
-      new webpack.DefinePlugin({
-        LOG_DIR: JSON.stringify('.')
-      })
-    );
   }
+
+  config.plugins = config.plugins.concat([
+    new webpack.DefinePlugin({__IS_STREAMING__: JSON.stringify(Boolean(env.stream))}),
+    new webpack.DefinePlugin({__IS_LIVE__: JSON.stringify(Boolean(env.live))}),
+    new webpack.DefinePlugin({__PORT__: JSON.stringify(env.port)}),
+    new webpack.DefinePlugin({__MAX_CONCURRENCY__: JSON.stringify(env.maxConcurrency)})
+  ]);
+
   return require('../webpack.config.local')(config)(env);
 };

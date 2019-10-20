@@ -26,19 +26,21 @@ export const COORDINATE = {
 };
 
 export const DEFAULT_VIEW_STATE = {
-  minZoom: 12,
-  maxZoom: 24,
+  minZoom: 0,
+  maxZoom: 30,
   minPitch: 0,
   maxPitch: 0,
   bearing: 0,
   pitch: 0,
-  zoom: 20
+  zoom: 22
 };
 
 export const VIEW_MODE = {
   TOP_DOWN: {
     name: 'top-down',
-    initialViewState: {},
+    initialViewState: {
+      maxPitch: 360
+    },
     orthographic: true,
     tracked: {
       position: true
@@ -47,7 +49,8 @@ export const VIEW_MODE = {
   PERSPECTIVE: {
     name: 'perspective',
     initialViewState: {
-      maxPitch: 85,
+      // maxPitch: 85,
+      maxPitch: 360,
       pitch: 60
     },
     tracked: {

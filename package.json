@@ -57,5 +57,6 @@
     "copyright-check",
     "test-fast"
   ],
-  "private": true
+  "private": true,
+  "dependencies": {}
 }

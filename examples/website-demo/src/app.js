@@ -22,8 +22,7 @@
 import React, {PureComponent} from 'react';
 import {render} from 'react-dom';
 
-import {setXVIZConfig} from '@xviz/parser';
-import {XVIZFileLoader} from 'streetscape.gl';
+import {setXVIZConfig, getXVIZConfig} from '@xviz/parser';
 import {ThemeProvider} from '@streetscape.gl/monochrome';
 
 import ControlPanel from './control-panel';
@@ -32,50 +31,38 @@ import MapView from './map-view';
 import Timeline from './timeline';
 import Toolbar from './toolbar';
 import HUD from './hud';
-import NotificationPanel from './notification-panel';
-import isMobile from './is-mobile';
-
-import {LOGS, MOBILE_NOTIFICATION} from './constants';
+import {createXVIZLiveLoader} from './log-from-live'
 import {UI_THEME} from './custom-styles';
 
 import './stylesheets/main.scss';
 
+import {XVIZ_CONFIG} from './constants';
+
+setXVIZConfig(XVIZ_CONFIG);
+const TIMEFORMAT_SCALE = getXVIZConfig().TIMESTAMP_FORMAT === 'seconds' ? 1000 : 1;
+const videoAspectRatio = 1.6;
+
+var exampleLog;
+if (__IS_STREAMING__) {
+  exampleLog = require('./log-from-stream');
+} else if (__IS_LIVE__) {
+  exampleLog = createXVIZLiveLoader(__PORT__, __MAX_CONCURRENCY__);
+} else {
+  exampleLog = require('./log-from-file');
+}
+
 class Example extends PureComponent {
   state = {
-    ...(!isMobile && this._loadLog(LOGS[0])),
+    log: exampleLog,
     settings: {
       viewMode: 'PERSPECTIVE',
       showTooltip: false
     }
   };
 
-  _loadLog(logSettings) {
-    if (logSettings.xvizConfig) {
-      setXVIZConfig(logSettings.xvizConfig);
-    }
-
-    const loader = new XVIZFileLoader({
-      timingsFilePath: `${logSettings.path}/0-frame.json`,
-      getFilePath: index => `${logSettings.path}/${index + 1}-frame.glb`,
-      worker: true,
-      maxConcurrency: 4
-    })
-      .on('ready', () =>
-        loader.updateStreamSettings({
-          '/tracklets/label': false
-        })
-      )
-      .on('error', console.error); // eslint-disable-line
-
-    loader.connect();
-
-    return {selectedLog: logSettings, log: loader};
+  componentDidMount() {
+    this.state.log.on('error', console.error).connect();
   }
-
-  _onLogChange = selectedLog => {
-    this.state.log.close();
-    this.setState(this._loadLog(selectedLog));
-  };
 
   _onSettingsChange = changedSettings => {
     this.setState({
@@ -84,25 +71,19 @@ class Example extends PureComponent {
   };
 
   render() {
-    if (isMobile) {
-      return <NotificationPanel notification={MOBILE_NOTIFICATION} />;
-    }
-
-    const {log, selectedLog, settings} = this.state;
+    const {log, settings} = this.state;
 
     return (
       <div id="container">
         <MapView log={log} settings={settings} onSettingsChange={this._onSettingsChange} />
 
-        <ControlPanel selectedLog={selectedLog} onLogChange={this._onLogChange} log={log} />
+        <ControlPanel log={log} />
 
         <HUD log={log} />
 
-        <Timeline log={log} />
-
         <Toolbar settings={settings} onSettingsChange={this._onSettingsChange} />
 
-        <CameraPanel log={log} videoAspectRatio={selectedLog.videoAspectRatio} />
+        <CameraPanel log={log} videoAspectRatio={videoAspectRatio} />
       </div>
     );
   }

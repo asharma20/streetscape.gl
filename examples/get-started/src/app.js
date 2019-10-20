@@ -22,6 +22,7 @@
 /* eslint-disable no-console, no-unused-vars, no-undef */
 import React, {PureComponent} from 'react';
 import {render} from 'react-dom';
+import {createXVIZLiveLoader} from './log-from-live';
 
 import {setXVIZConfig, getXVIZConfig} from '@xviz/parser';
 import {
@@ -43,11 +44,14 @@ setXVIZConfig(XVIZ_CONFIG);
 const TIMEFORMAT_SCALE = getXVIZConfig().TIMESTAMP_FORMAT === 'seconds' ? 1000 : 1;
 
 // __IS_STREAMING__ and __IS_LIVE__ are defined in webpack.config.js
-const exampleLog = require(__IS_STREAMING__
-  ? './log-from-stream'
-  : __IS_LIVE__
-    ? './log-from-live'
-    : './log-from-file').default;
+var exampleLog;
+if (__IS_STREAMING__) {
+  exampleLog = require('./log-from-stream');
+} else if (__IS_LIVE__) {
+  exampleLog = createXVIZLiveLoader(__PORT__, __MAX_CONCURRENCY__);
+} else {
+  exampleLog = require('./log-from-file');
+}
 
 class Example extends PureComponent {
   state = {

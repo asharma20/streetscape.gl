@@ -61,7 +61,9 @@ module.exports = (env = {}) => {
   // This switch between streaming and static file loading
   config.plugins = config.plugins.concat([
     new webpack.DefinePlugin({__IS_STREAMING__: JSON.stringify(Boolean(env.stream))}),
-    new webpack.DefinePlugin({__IS_LIVE__: JSON.stringify(Boolean(env.live))})
+    new webpack.DefinePlugin({__IS_LIVE__: JSON.stringify(Boolean(env.live))}),
+    new webpack.DefinePlugin({__PORT__: JSON.stringify(env.port)}),
+    new webpack.DefinePlugin({__MAX_CONCURRENCY__: JSON.stringify(env.maxConcurrency)})
   ]);
 
   if (env.local) {

@@ -17,20 +17,15 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-import sedan from './sedan';
 
-function createCar(makeMesh, opts) {
-  const {length, width, height, scale, color = [128, 128, 128], origin = [0, 0, 0]} = opts;
+import {XVIZFileLoader} from 'streetscape.gl';
 
-  if (!Number.isFinite(length) || !Number.isFinite(width) || !Number.isFinite(height)) {
-    throw new Error('invalid dimensions');
-  }
-
-  const mesh = makeMesh(length, width, height, scale);
-
-  return {color, origin, mesh, scale: [1, 1, 1]};
-}
-
-export default {
-  sedan: opts => createCar(sedan, opts)
-};
+export default new XVIZFileLoader({
+  timingsFilePath:
+    'https://raw.githubusercontent.com/uber/xviz-data/master/kitti/2011_09_26_drive_0005_sync/0-frame.json',
+  getFilePath: index =>
+    `https://raw.githubusercontent.com/uber/xviz-data/master/kitti/2011_09_26_drive_0005_sync/${index +
+      1}-frame.glb`,
+  worker: true,
+  maxConcurrency: 4
+});

@@ -73,30 +73,6 @@ export const PLAYBACK_CONTROL_STYLE = {
     background: '#111',
     borderRadius: 4
   },
-  lookAheadSlider: {
-    knobSize: 8,
-    track: {
-      height: 4,
-      background: '#111',
-      borderRadius: 2
-    },
-    trackFill: {
-      background: '#858586',
-      borderRadius: 2
-    },
-    knob: {
-      borderWidth: 4
-    }
-  },
-  lookAheadMarker: props => ({
-    borderTopColor: props.theme.controlColorActive
-  }),
-  playPauseButton: {
-    width: 24,
-    height: 24,
-    marginLeft: 12,
-    marginBottom: 4
-  },
   controls: {
     borderTop: 'solid 1px #404042',
     marginTop: 4,

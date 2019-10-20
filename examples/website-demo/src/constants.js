@@ -26,12 +26,16 @@ export const MAPBOX_TOKEN = process.env.MapboxAccessToken; // eslint-disable-lin
 
 export const MAP_STYLE = 'mapbox://styles/uberdata/cjfxhlikmaj1b2soyzevnywgs';
 
-// OBJ model width 2073mm, length 4946mm
-// Volkswagen Passat: width 1820mm, length 4780mm
+export const XVIZ_CONFIG = {
+  PLAYBACK_FRAME_RATE: 100,
+};
+
+// OBJ model width 2073mm, length 4946mm => 2.073m, 4.946m
+// Volkswagen Passat: width 1820mm, length 4780mm => 1.820m, 4.780m
 export const CAR = {
   mesh: load('./assets/car.obj', OBJLoader),
-  origin: [1.08, -0.32, 0],
-  scale: 0.0009,
+  origin: [0, 0, 0],
+  scale: 0.00018,
   wireframe: true,
   color: [160, 160, 160]
 };
@@ -42,31 +46,4 @@ export const SETTINGS = {
     title: 'View Mode',
     data: {TOP_DOWN: 'Top Down', PERSPECTIVE: 'Perspective', DRIVER: 'Driver'}
   }
-};
-
-// LOG_DIR is defined in webpack.config.js
-/* eslint-disable no-undef */
-export const LOGS = [
-  {
-    name: 'KITTI-0005',
-    path: `${LOG_DIR}/kitti/2011_09_26_drive_0005_sync`,
-    xvizConfig: {
-      TIME_WINDOW: 0.4
-    },
-    videoAspectRatio: 10 / 3
-  },
-  {
-    name: 'nuTonomy-0006',
-    path: `${LOG_DIR}/nutonomy/scene-0006`,
-    xvizConfig: {
-      TIME_WINDOW: 0.2,
-      PLAYBACK_FRAME_RATE: 16
-    },
-    videoAspectRatio: 16 / 9
-  }
-];
-
-export const MOBILE_NOTIFICATION = {
-  id: 'mobile',
-  message: 'Streetscape.gl demo can not run on mobile devices.'
 };
