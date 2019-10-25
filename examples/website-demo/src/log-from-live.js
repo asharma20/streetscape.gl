@@ -32,7 +32,8 @@ export function createXVIZLiveLoader(port, maxConcurrency) {
     bufferLength: 1,
     serverConfig: {
       // defaultLogLength: 30,
-      serverUrl: `ws://localhost:${port}`
+      serverUrl: `ws://localhost:${port}`,
+      retryAttempts: 60
     },
     worker: true,
     maxConcurrency: maxConcurrency

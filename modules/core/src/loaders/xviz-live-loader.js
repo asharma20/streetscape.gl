@@ -91,7 +91,7 @@ export default class XVIZLiveLoader extends XVIZWebsocketLoader {
 
     this.retrySettings = {
       retries: this.requestParams.retryAttempts,
-      minTimeout: 500,
+      minTimeout: 1000,
       randomize: true
     };
 
